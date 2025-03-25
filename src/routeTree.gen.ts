@@ -13,6 +13,8 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as MetricsIndexImport } from './routes/metrics/index'
+import { Route as MetricsDailyImport } from './routes/metrics/daily'
 
 // Create/Update Routes
 
@@ -25,6 +27,18 @@ const AboutRoute = AboutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MetricsIndexRoute = MetricsIndexImport.update({
+  id: '/metrics/',
+  path: '/metrics/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MetricsDailyRoute = MetricsDailyImport.update({
+  id: '/metrics/daily',
+  path: '/metrics/daily',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +60,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/metrics/daily': {
+      id: '/metrics/daily'
+      path: '/metrics/daily'
+      fullPath: '/metrics/daily'
+      preLoaderRoute: typeof MetricsDailyImport
+      parentRoute: typeof rootRoute
+    }
+    '/metrics/': {
+      id: '/metrics/'
+      path: '/metrics'
+      fullPath: '/metrics'
+      preLoaderRoute: typeof MetricsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +82,46 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/metrics/daily': typeof MetricsDailyRoute
+  '/metrics': typeof MetricsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/metrics/daily': typeof MetricsDailyRoute
+  '/metrics': typeof MetricsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/metrics/daily': typeof MetricsDailyRoute
+  '/metrics/': typeof MetricsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/about' | '/metrics/daily' | '/metrics'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/about' | '/metrics/daily' | '/metrics'
+  id: '__root__' | '/' | '/about' | '/metrics/daily' | '/metrics/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  MetricsDailyRoute: typeof MetricsDailyRoute
+  MetricsIndexRoute: typeof MetricsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  MetricsDailyRoute: MetricsDailyRoute,
+  MetricsIndexRoute: MetricsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +135,9 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/about",
+        "/metrics/daily",
+        "/metrics/"
       ]
     },
     "/": {
@@ -105,6 +145,12 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/metrics/daily": {
+      "filePath": "metrics/daily.tsx"
+    },
+    "/metrics/": {
+      "filePath": "metrics/index.tsx"
     }
   }
 }
