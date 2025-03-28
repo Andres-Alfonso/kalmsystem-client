@@ -17,6 +17,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as MetricsIndexImport } from './routes/metrics/index'
+import { Route as MetricsGroupsImport } from './routes/metrics/groups'
 import { Route as MetricsDailyImport } from './routes/metrics/daily'
 import { Route as MetricsClientImport } from './routes/metrics/client'
 import { Route as MetricsAdminImport } from './routes/metrics/admin'
@@ -57,6 +58,12 @@ const IndexRoute = IndexImport.update({
 const MetricsIndexRoute = MetricsIndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => MetricsRoute,
+} as any)
+
+const MetricsGroupsRoute = MetricsGroupsImport.update({
+  id: '/groups',
+  path: '/groups',
   getParentRoute: () => MetricsRoute,
 } as any)
 
@@ -151,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MetricsDailyImport
       parentRoute: typeof MetricsImport
     }
+    '/metrics/groups': {
+      id: '/metrics/groups'
+      path: '/groups'
+      fullPath: '/metrics/groups'
+      preLoaderRoute: typeof MetricsGroupsImport
+      parentRoute: typeof MetricsImport
+    }
     '/metrics/': {
       id: '/metrics/'
       path: '/'
@@ -167,6 +181,7 @@ interface MetricsRouteChildren {
   MetricsAdminRoute: typeof MetricsAdminRoute
   MetricsClientRoute: typeof MetricsClientRoute
   MetricsDailyRoute: typeof MetricsDailyRoute
+  MetricsGroupsRoute: typeof MetricsGroupsRoute
   MetricsIndexRoute: typeof MetricsIndexRoute
 }
 
@@ -174,6 +189,7 @@ const MetricsRouteChildren: MetricsRouteChildren = {
   MetricsAdminRoute: MetricsAdminRoute,
   MetricsClientRoute: MetricsClientRoute,
   MetricsDailyRoute: MetricsDailyRoute,
+  MetricsGroupsRoute: MetricsGroupsRoute,
   MetricsIndexRoute: MetricsIndexRoute,
 }
 
@@ -190,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/metrics/admin': typeof MetricsAdminRoute
   '/metrics/client': typeof MetricsClientRoute
   '/metrics/daily': typeof MetricsDailyRoute
+  '/metrics/groups': typeof MetricsGroupsRoute
   '/metrics/': typeof MetricsIndexRoute
 }
 
@@ -202,6 +219,7 @@ export interface FileRoutesByTo {
   '/metrics/admin': typeof MetricsAdminRoute
   '/metrics/client': typeof MetricsClientRoute
   '/metrics/daily': typeof MetricsDailyRoute
+  '/metrics/groups': typeof MetricsGroupsRoute
   '/metrics': typeof MetricsIndexRoute
 }
 
@@ -216,6 +234,7 @@ export interface FileRoutesById {
   '/metrics/admin': typeof MetricsAdminRoute
   '/metrics/client': typeof MetricsClientRoute
   '/metrics/daily': typeof MetricsDailyRoute
+  '/metrics/groups': typeof MetricsGroupsRoute
   '/metrics/': typeof MetricsIndexRoute
 }
 
@@ -231,6 +250,7 @@ export interface FileRouteTypes {
     | '/metrics/admin'
     | '/metrics/client'
     | '/metrics/daily'
+    | '/metrics/groups'
     | '/metrics/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -242,6 +262,7 @@ export interface FileRouteTypes {
     | '/metrics/admin'
     | '/metrics/client'
     | '/metrics/daily'
+    | '/metrics/groups'
     | '/metrics'
   id:
     | '__root__'
@@ -254,6 +275,7 @@ export interface FileRouteTypes {
     | '/metrics/admin'
     | '/metrics/client'
     | '/metrics/daily'
+    | '/metrics/groups'
     | '/metrics/'
   fileRoutesById: FileRoutesById
 }
@@ -309,6 +331,7 @@ export const routeTree = rootRoute
         "/metrics/admin",
         "/metrics/client",
         "/metrics/daily",
+        "/metrics/groups",
         "/metrics/"
       ]
     },
@@ -328,6 +351,10 @@ export const routeTree = rootRoute
     },
     "/metrics/daily": {
       "filePath": "metrics/daily.tsx",
+      "parent": "/metrics"
+    },
+    "/metrics/groups": {
+      "filePath": "metrics/groups.tsx",
       "parent": "/metrics"
     },
     "/metrics/": {
