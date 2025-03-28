@@ -7,6 +7,7 @@ const API_URL = 'http://localhost:3000'; // URL de tu API NestJS
 export interface User {
   id: string;
   email: string;
+  client: number;
   roles: string[];
 }
 
@@ -15,6 +16,7 @@ export interface AuthState {
   user: User | null;
   token: string | null;
   refreshToken: string | null;
+  client: number | null;
 }
 
 // Estado inicial de autenticación
@@ -23,6 +25,7 @@ const initialState: AuthState = {
   user: null,
   token: null,
   refreshToken: null,
+  client: null,
 };
 
 // Clase para manejar la autenticación
@@ -64,7 +67,8 @@ class AuthService {
       token: this.state.token,
       refreshToken: this.state.refreshToken,
       user: this.state.user,
-      isAuthenticated: this.state.isAuthenticated
+      isAuthenticated: this.state.isAuthenticated,
+      client: this.state.client
     }));
   }
 
@@ -156,10 +160,11 @@ class AuthService {
       console.log(response);
       
       // Establece el nuevo estado de autenticación
-      const { user, accessToken, refreshToken } = response.data;
+      const { user, accessToken, refreshToken, client } = response.data;
       
       this.state = {
         isAuthenticated: true,
+        client,
         user,
         token: accessToken,
         refreshToken

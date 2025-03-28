@@ -44,7 +44,7 @@ function Home() {
                   <h2 className="text-xl font-semibold text-gray-800 mb-4">Tu Panel</h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    {user && user.roles.includes("admin") && (
+                    {user && user.roles.includes("Admin") && (
                       <div className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow p-6">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
